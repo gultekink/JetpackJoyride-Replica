@@ -7,7 +7,7 @@ namespace JetpackJoyrideReplica.Services
     public class InputService : IInputServices, IDisposable
     {
         private readonly GameInput _gameInput;
-        public bool isFlying => _gameInput.Player.Fly.IsPressed();
+        public bool IsFlying => _gameInput.Player.Fly.IsPressed();
 
         public InputService()
         {
@@ -18,8 +18,8 @@ namespace JetpackJoyrideReplica.Services
 
         public void Dispose()
         {
-            _gameInput?.Dispose();
             _gameInput.Player.Disable();
+            _gameInput.Dispose();         
         }
 
     }

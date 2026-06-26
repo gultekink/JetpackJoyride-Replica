@@ -2,6 +2,7 @@ using VContainer;
 using VContainer.Unity;
 using JetpackJoyrideReplica.Core;
 using JetpackJoyrideReplica.Services;
+using JetpackJoyrideReplica.Player;
 
 namespace JetpackJoyrideReplica.Infrastructure
 {
@@ -10,6 +11,7 @@ namespace JetpackJoyrideReplica.Infrastructure
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<IInputServices, InputService>(Lifetime.Singleton);
+            builder.RegisterComponentInHierarchy<PlayerController>();
         }
     }
 }
