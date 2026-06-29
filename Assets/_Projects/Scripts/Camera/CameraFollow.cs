@@ -1,14 +1,18 @@
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+namespace JetpackJoyrideReplica.Cameras
 {
-    [SerializeField] private Transform cameraTransform;
-    [SerializeField] float offsetX;
-    [SerializeField] private float offsetY;
-    [SerializeField] private float offsetZ;
-    // Update is called once per frame
-    void LateUpdate()
+    public class CameraFollow : MonoBehaviour
     {
-        transform.position = new Vector3(cameraTransform.position.x + offsetX, cameraTransform.position.y + offsetY, cameraTransform.position.z + offsetZ);
+        [SerializeField] private Transform target;
+        [SerializeField] private float offsetX;
+        [SerializeField] private float offsetY;
+        [SerializeField] private float offsetZ;
+        // Update is called once per frame
+        void LateUpdate()
+        {
+            transform.position = new Vector3(target.position.x + offsetX, offsetY, target.position.z + offsetZ);
+        }
     }
+
 }
