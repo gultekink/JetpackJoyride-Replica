@@ -9,14 +9,15 @@ namespace JetpackJoyrideReplica.Player
     public class PlayerController : MonoBehaviour
     {
         private PlayerMotor _playerMotor;
-        private IInputServices _inputService;
+        private IInputService _inputService;
 
         public PlayerStateMachine StateMachine { get; private set; }
         public PlayerRunningState RunningState { get; private set; }
         public PlayerFlyingState FlyingState { get; private set; }
+        public PlayerDeathState DeathState { get; private set; }
 
         [Inject]
-        public void Construct(IInputServices inputService)
+        public void Construct(IInputService inputService)
         {
             _inputService = inputService;
             _playerMotor = GetComponent<PlayerMotor>();
@@ -24,9 +25,11 @@ namespace JetpackJoyrideReplica.Player
             StateMachine = new PlayerStateMachine();
             RunningState = new PlayerRunningState(_playerMotor, StateMachine, _inputService);
             FlyingState = new PlayerFlyingState(_playerMotor, StateMachine, _inputService);
+            DeathState = new PlayerDeathState(_playerMotor);
 
-            StateMachine.Initialize(RunningState, FlyingState);
+            StateMachine.Initialize(RunningState, FlyingState, DeathState);
         }
+
         private void Start()
         {
             StateMachine.ChangeState(RunningState);
@@ -40,9 +43,11 @@ namespace JetpackJoyrideReplica.Player
         private void FixedUpdate()
         {
             StateMachine.FixedTick();
+        }       
+
+        public void Die()
+        {
+            StateMachine.ToDeath();
         }
-
-        
     }
-
 }

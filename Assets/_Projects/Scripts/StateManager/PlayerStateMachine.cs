@@ -1,5 +1,4 @@
 using JetpackJoyrideReplica.Player.States;
-using UnityEngine;
 
 namespace JetpackJoyrideReplica.Player
 {
@@ -7,24 +6,29 @@ namespace JetpackJoyrideReplica.Player
     {
         private IState _runningState;
         private IState _flyingState;
+        private IState _deathState;
 
         public IState CurrentState { get; private set; }
 
 
-        public void Initialize(IState runningState, IState flyingState)
+        public void Initialize(IState runningState, IState flyingState, IState deathState)
         {
             _runningState = runningState;
             _flyingState = flyingState;
+            _deathState = deathState;
         }
 
         public void ChangeState(IState state)
         {
+            if (state == CurrentState) 
+                return; 
+
             CurrentState?.Exit();
             CurrentState = state;
             CurrentState?.Enter();
         }
 
-        public void Tick()
+        public void Tick( )
         {
             CurrentState?.Tick();
         }
@@ -42,6 +46,11 @@ namespace JetpackJoyrideReplica.Player
         public void ToFlying()
         {
             ChangeState(_flyingState);
+        }
+
+        public void ToDeath()
+        {
+            ChangeState(_deathState);
         }
     }
 

@@ -8,7 +8,7 @@ namespace JetpackJoyrideReplica.Player
         private Rigidbody2D _rigidbody;
 
         [SerializeField] private float _runningSpeed = 5f;
-        [SerializeField] private float _flyingSpeed = 15f;
+        [SerializeField] private float _flyingForce = 15f;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Awake()
@@ -23,7 +23,15 @@ namespace JetpackJoyrideReplica.Player
 
         public void FlyUp()
         {
-            _rigidbody.AddForce(Vector2.up * _flyingSpeed, ForceMode2D.Force);
+            if (_rigidbody.linearVelocity.y < 8)
+            {
+                _rigidbody.AddForce(Vector2.up * _flyingForce, ForceMode2D.Force);
+            }
+        }
+
+        public void StopAction()
+        {
+            
         }
 
     }

@@ -10,7 +10,7 @@ namespace JetpackJoyrideReplica.Infrastructure
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.Register<IInputServices, InputService>(Lifetime.Singleton);
+            builder.Register<IInputService, InputService>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<PlayerController>();
         }
     }

@@ -1,6 +1,6 @@
 namespace JetpackJoyrideReplica.Core
 {
-    public interface IInputServices
+    public interface IInputService
     {
         bool IsFlying { get; }
     }

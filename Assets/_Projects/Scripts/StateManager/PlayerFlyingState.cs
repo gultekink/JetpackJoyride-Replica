@@ -1,14 +1,14 @@
-using JetpackJoyrideReplica.Core;
-using UnityEngine;
+﻿using JetpackJoyrideReplica.Core;
+
 namespace JetpackJoyrideReplica.Player.States
 {
     public class PlayerFlyingState : IState
     {
         private readonly PlayerMotor _playerMotor;
-        private readonly IInputServices _input;
+        private readonly IInputService _input;
         private readonly PlayerStateMachine _playerStateMachine;     
 
-        public PlayerFlyingState(PlayerMotor player, PlayerStateMachine playerState, IInputServices inputServices)
+        public PlayerFlyingState(PlayerMotor player, PlayerStateMachine playerState, IInputService inputServices)
         {
             _playerMotor = player;
             _playerStateMachine = playerState;
@@ -27,7 +27,6 @@ namespace JetpackJoyrideReplica.Player.States
 
         public void Tick()
         {
-           
             if (!_input.IsFlying)
             {
                 _playerStateMachine.ToRunning();
@@ -36,9 +35,8 @@ namespace JetpackJoyrideReplica.Player.States
 
         public void FixedTick()
         {
-            _playerMotor.FlyUp();
             _playerMotor.MoveForward();
-
+            _playerMotor.FlyUp();
         }
     }
 }
