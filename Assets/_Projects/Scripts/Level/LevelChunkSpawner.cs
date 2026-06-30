@@ -1,23 +1,29 @@
 using System.Collections.Generic;
+using JetpackJoyrideReplica.Level.Pooling;
 using UnityEngine;
 
-namespace JetpackJoyrideReplica.LevelChunk
+namespace JetpackJoyrideReplica.Level.Spawning
 {
     public class LevelChunkSpawner : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private GameObject _chunkObject;
         [SerializeField] private Transform _chunkFirstTransform;
         [SerializeField] private Transform _playerTransform;
+        [SerializeField] private ChunkPool _chunkPool;
+
+        [Header("Values")]
+        [SerializeField] private float _nextSpawnX = 0;
+        [SerializeField] private float _spawnAheadDistance = 100;
+        [SerializeField] private float _chunkLength = 50f;
+        [SerializeField] private float _cleanupDistanceBehind = 100f;
+        [SerializeField] private int _chunkCount = 2;
 
         private List<GameObject> _spawnedChunks = new List<GameObject>();
 
-        private float _nextSpawnX = 0;
-        private float _spawnAheadDistance = 100;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < _chunkCount; i++)
             {
                 GenerateChunk();
             }
@@ -41,11 +47,11 @@ namespace JetpackJoyrideReplica.LevelChunk
              _chunkFirstTransform.position.z
          );
 
-            GameObject spawnedChunk = Instantiate(_chunkObject, spawnPosition, Quaternion.identity);
+            GameObject spawnedChunk = _chunkPool.Get(spawnPosition,Quaternion.identity);
 
             _spawnedChunks.Add(spawnedChunk);
 
-            _nextSpawnX += 50;
+            _nextSpawnX += _chunkLength;
         }
 
         void DeleteLastChunk()
@@ -55,9 +61,12 @@ namespace JetpackJoyrideReplica.LevelChunk
 
             GameObject lastChunk = _spawnedChunks[0];
 
-            if (lastChunk.transform.position.x < _playerTransform.position.x - 100f)
+            float chunkEndX = lastChunk.transform.position.x + _chunkLength;
+            float cleanupX = _playerTransform.position.x - _cleanupDistanceBehind;
+
+            if (chunkEndX < cleanupX)
             {
-                Destroy(lastChunk);
+                _chunkPool.Return(lastChunk);
                 _spawnedChunks.RemoveAt(0);
             }
         }
