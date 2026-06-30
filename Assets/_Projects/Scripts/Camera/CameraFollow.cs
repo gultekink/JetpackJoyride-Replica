@@ -2,8 +2,10 @@ using UnityEngine;
 
 namespace JetpackJoyrideReplica.Cameras
 {
+    [DefaultExecutionOrder(100)]
     public class CameraFollow : MonoBehaviour
     {
+        
         [SerializeField] private Transform target;
         [SerializeField] private float offsetX;
         [SerializeField] private float offsetY;
