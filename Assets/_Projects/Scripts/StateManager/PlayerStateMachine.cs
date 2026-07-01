@@ -4,9 +4,9 @@ namespace JetpackJoyrideReplica.Player
 {
     public class PlayerStateMachine
     {
-        private IState _runningState;
-        private IState _flyingState;
         private IState _deathState;
+        private IState _flyingState;
+        private IState _runningState;
 
         public IState CurrentState { get; private set; }
 
@@ -20,15 +20,15 @@ namespace JetpackJoyrideReplica.Player
 
         public void ChangeState(IState state)
         {
-            if (state == CurrentState) 
-                return; 
+            if (state == CurrentState)
+                return;
 
             CurrentState?.Exit();
             CurrentState = state;
             CurrentState?.Enter();
         }
 
-        public void Tick( )
+        public void Tick()
         {
             CurrentState?.Tick();
         }
@@ -53,5 +53,4 @@ namespace JetpackJoyrideReplica.Player
             ChangeState(_deathState);
         }
     }
-
 }

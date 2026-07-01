@@ -4,8 +4,8 @@ namespace JetpackJoyrideReplica.Player.States
 {
     public class PlayerRunningState : IState
     {
-        private readonly PlayerMotor _playerMotor;
         private readonly IInputService _input;
+        private readonly PlayerMotor _playerMotor;
         private readonly PlayerStateMachine _playerStateMachine;
 
         public PlayerRunningState(PlayerMotor playerMotor, PlayerStateMachine playerState, IInputService inputServices)
@@ -17,28 +17,20 @@ namespace JetpackJoyrideReplica.Player.States
 
         public void Enter()
         {
-
         }
 
         public void Exit()
         {
-
         }
 
         public void Tick()
         {
             _playerMotor.MoveForward();
-            if (_input.IsFlying)
-            {
-                _playerStateMachine.ToFlying();
-            }
+            if (_input.IsFlying) _playerStateMachine.ToFlying();
         }
 
         public void FixedTick()
         {
-
         }
-
     }
-
 }

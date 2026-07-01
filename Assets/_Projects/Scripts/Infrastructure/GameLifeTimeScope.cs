@@ -1,8 +1,8 @@
+using JetpackJoyrideReplica.Core;
+using JetpackJoyrideReplica.Player;
+using JetpackJoyrideReplica.Services;
 using VContainer;
 using VContainer.Unity;
-using JetpackJoyrideReplica.Core;
-using JetpackJoyrideReplica.Services;
-using JetpackJoyrideReplica.Player;
 
 namespace JetpackJoyrideReplica.Infrastructure
 {

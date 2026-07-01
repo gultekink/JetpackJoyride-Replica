@@ -6,63 +6,58 @@ namespace JetpackJoyrideReplica.Level.Spawning
 {
     public class LevelChunkSpawner : MonoBehaviour
     {
-        [Header("References")]
-        [SerializeField] private Transform _chunkFirstTransform;
+        [Header("References")] [SerializeField]
+        private Transform _chunkFirstTransform;
+
         [SerializeField] private Transform _playerTransform;
         [SerializeField] private ChunkPool _chunkPool;
 
-        [Header("Values")]
-        [SerializeField] private float _nextSpawnX = 0;
+        [Header("Values")] [SerializeField] private float _nextSpawnX;
+
         [SerializeField] private float _spawnAheadDistance = 100;
         [SerializeField] private float _chunkLength = 50f;
         [SerializeField] private float _cleanupDistanceBehind = 100f;
         [SerializeField] private int _chunkCount = 2;
 
-        private List<GameObject> _spawnedChunks = new List<GameObject>();
+        private readonly List<GameObject> _spawnedChunks = new();
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Start()
         {
-            for (int i = 0; i < _chunkCount; i++)
-            {
-                GenerateChunk();
-            }
+            for (var i = 0; i < _chunkCount; i++) GenerateChunk();
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            if (_playerTransform.position.x + _spawnAheadDistance > _nextSpawnX)
-            {
-                GenerateChunk();
-            }
+            if (_playerTransform.position.x + _spawnAheadDistance > _nextSpawnX) GenerateChunk();
             DeleteLastChunk();
         }
 
-        void GenerateChunk()
+        private void GenerateChunk()
         {
-            Vector3 spawnPosition = new Vector3(
-             _nextSpawnX,
-             _chunkFirstTransform.position.y,
-             _chunkFirstTransform.position.z
-         );
+            var spawnPosition = new Vector3(
+                _nextSpawnX,
+                _chunkFirstTransform.position.y,
+                _chunkFirstTransform.position.z
+            );
 
-            GameObject spawnedChunk = _chunkPool.Get(spawnPosition,Quaternion.identity);
+            var spawnedChunk = _chunkPool.Get(spawnPosition, Quaternion.identity);
 
             _spawnedChunks.Add(spawnedChunk);
 
             _nextSpawnX += _chunkLength;
         }
 
-        void DeleteLastChunk()
+        private void DeleteLastChunk()
         {
             if (_spawnedChunks.Count == 0)
                 return;
 
-            GameObject lastChunk = _spawnedChunks[0];
+            var lastChunk = _spawnedChunks[0];
 
-            float chunkEndX = lastChunk.transform.position.x + _chunkLength;
-            float cleanupX = _playerTransform.position.x - _cleanupDistanceBehind;
+            var chunkEndX = lastChunk.transform.position.x + _chunkLength;
+            var cleanupX = _playerTransform.position.x - _cleanupDistanceBehind;
 
             if (chunkEndX < cleanupX)
             {
