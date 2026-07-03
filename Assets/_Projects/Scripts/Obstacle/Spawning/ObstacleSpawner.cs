@@ -6,55 +6,54 @@ namespace JetpackJoyrideReplica.Obstacles.Spawning
 {
     public class ObstacleSpawner : MonoBehaviour
     {
-        [Header("References")]
-        [SerializeField] private GameObject _obstacleObject;
+        [Header("References")] [SerializeField]
+        private GameObject _obstacleObject;
+
         [SerializeField] private Transform _playerTransform;
         [SerializeField] private ObstaclePool _obstaclePool;
 
-        [Header("Spawn Settings")]
-        [SerializeField] private float _spawnDistanceAhead = 30;
+        [Header("Spawn Settings")] [SerializeField]
+        private float _spawnDistanceAhead = 30;
+
         [SerializeField] private float _spawnIntervalX = 30f;
-        [SerializeField] private float _minSpawnY = 0f;
+        [SerializeField] private float _minSpawnY;
         [SerializeField] private float _maxSpawnY = 8f;
         [SerializeField] private float _cleanupDistanceBehind = 50;
 
-        private List<GameObject> _spawnedObstacles = new List<GameObject>();
-        
 
         private float _nextSpawnX = 25;
-            
+
+        private readonly List<GameObject> _spawnedObstacles = new();
+
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            if (_playerTransform.position.x + _spawnDistanceAhead > _nextSpawnX)
-            {
-                GenerateObstacle();
-            }
+            if (_playerTransform.position.x + _spawnDistanceAhead > _nextSpawnX) GenerateObstacle();
 
             DeleteLastObstacle();
         }
 
-        void GenerateObstacle()
+        private void GenerateObstacle()
         {
-            float randomY = Random.Range(_minSpawnY, _maxSpawnY);
+            var randomY = Random.Range(_minSpawnY, _maxSpawnY);
 
-            Vector3 spawnPosition = new Vector3(_nextSpawnX, randomY, 0f);
+            var spawnPosition = new Vector3(_nextSpawnX, randomY, 0f);
 
-            GameObject obj = _obstaclePool.Get(spawnPosition, Quaternion.identity);
+            var obj = _obstaclePool.Get(spawnPosition, Quaternion.identity);
             _nextSpawnX += _spawnIntervalX;
 
             _spawnedObstacles.Add(obj);
         }
 
-        void DeleteLastObstacle()
+        private void DeleteLastObstacle()
         {
             if (_spawnedObstacles.Count == 0)
                 return;
 
-            GameObject oldestObstacle = _spawnedObstacles[0];
+            var oldestObstacle = _spawnedObstacles[0];
 
-            float cleanupX = _playerTransform.position.x - _cleanupDistanceBehind;
+            var cleanupX = _playerTransform.position.x - _cleanupDistanceBehind;
 
             if (oldestObstacle.transform.position.x < cleanupX)
             {
@@ -64,4 +63,3 @@ namespace JetpackJoyrideReplica.Obstacles.Spawning
         }
     }
 }
-

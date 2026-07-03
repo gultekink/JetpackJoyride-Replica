@@ -1,30 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace JetpackJoyrideReplica.Obstacles.Pooling
 {
     public class ObstaclePool : MonoBehaviour
     {
         [SerializeField] private GameObject _obstaclePrefab;
-        private readonly Queue<GameObject> _availableObstacles = new Queue<GameObject>();
         [SerializeField] private int _initalPoolSize = 10;
+
+        private readonly Queue<GameObject> _availableObstacles = new();
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Awake()
+        private void Awake()
         {
             PrewarmPool();
         }
 
-        void PrewarmPool()
+        private void PrewarmPool()
         {
-            for (int i = 0; i < _initalPoolSize; i++)
+            for (var i = 0; i < _initalPoolSize; i++)
             {
-                GameObject obj = CreateObstacle();
+                var obj = CreateObstacle();
                 _availableObstacles.Enqueue(obj);
             }
         }
 
         private GameObject CreateObstacle()
         {
-            GameObject obstacle = Instantiate(_obstaclePrefab, transform);
+            var obstacle = Instantiate(_obstaclePrefab, transform);
             obstacle.SetActive(false);
             return obstacle;
         }
@@ -34,13 +37,9 @@ namespace JetpackJoyrideReplica.Obstacles.Pooling
             GameObject obstacle;
 
             if (_availableObstacles.Count > 0)
-            {
-               obstacle = _availableObstacles.Dequeue();
-            }
+                obstacle = _availableObstacles.Dequeue();
             else
-            {
                 obstacle = CreateObstacle();
-            }
 
             obstacle.transform.SetPositionAndRotation(position, rotation);
             obstacle.SetActive(true);
@@ -54,5 +53,4 @@ namespace JetpackJoyrideReplica.Obstacles.Pooling
             _availableObstacles.Enqueue(obstacle);
         }
     }
-
 }

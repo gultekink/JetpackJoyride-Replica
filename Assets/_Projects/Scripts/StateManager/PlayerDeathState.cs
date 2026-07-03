@@ -13,24 +13,18 @@ namespace JetpackJoyrideReplica.Player.States
         public void Enter()
         {
             _playerMotor.StopAction();
-           
         }
 
         public void Exit()
         {
-            
         }
 
         public void FixedTick()
         {
-            
         }
 
         public void Tick()
         {
-           
         }
-
     }
-
 }

@@ -4,4 +4,4 @@ namespace JetpackJoyrideReplica.Core
     {
         bool IsFlying { get; }
     }
-}   
+}

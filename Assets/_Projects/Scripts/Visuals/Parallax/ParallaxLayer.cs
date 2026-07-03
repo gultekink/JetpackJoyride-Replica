@@ -1,4 +1,5 @@
 using UnityEngine;
+
 namespace JetpackJoyrideReplica.Visuals.Parallax
 {
     [DefaultExecutionOrder(200)]
@@ -12,27 +13,22 @@ namespace JetpackJoyrideReplica.Visuals.Parallax
         [SerializeField] private Vector3 _cameraStartPosition;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Awake()
+        private void Awake()
         {
-            if (_cameraTransform != null)   
-            {
-                _cameraTransform = Camera.main.transform;
-            }
+            if (_cameraTransform != null) _cameraTransform = Camera.main.transform;
 
             _startPosition = transform.position;
             _cameraStartPosition = _cameraTransform.position;
-
         }
 
         // Update is called once per frame
-        void LateUpdate()
+        private void LateUpdate()
         {
-            Vector3 cameraDelta = _cameraTransform.position - _cameraStartPosition;
+            var cameraDelta = _cameraTransform.position - _cameraStartPosition;
 
-            float targetX = _startPosition.x + cameraDelta.x*_parallaxFactor;
+            var targetX = _startPosition.x + cameraDelta.x * _parallaxFactor;
 
-            transform.position = new Vector3(targetX,_startPosition.y,_startPosition.z);
+            transform.position = new Vector3(targetX, _startPosition.y, _startPosition.z);
         }
     }
-
 }
